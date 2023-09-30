@@ -1,0 +1,29 @@
+
+# File di build
+target/
+build/
+
+# File generati dall'IDE
+.idea/
+.vscode/
+
+# Dipendenze gestite da Maven
+# Aggiungi altre directory specifiche del tuo ambiente di sviluppo, se necessario
+/.classpath
+/.project
+/.settings/
+
+# File di configurazione specifici del tuo IDE
+# Aggiungi altre estensioni di file specifiche del tuo ambiente di sviluppo, se necessario
+*.iml
+*.ipr
+*.iws
+
+# File di log
+*.log
+
+# File di backup
+*~
+
+# File di configurazione di Gradle
+.gradle/
