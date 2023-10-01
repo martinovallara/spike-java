@@ -4,12 +4,10 @@ import java.util.Arrays;
 
 public class StringCalculator {
 
-    public int add(String input) {
+    public Integer add(String input) {
 
-        DelimiterParser parser = new DelimiterParser();
-        CalculatorParams params = parser.parse(input);
+        NumbersParser parser = new NumbersParser();
 
-        Adder adder = new Adder();
-        return adder.getSum(params);
+        return Adder.getSum(parser.numbers(input));
     }
 }
