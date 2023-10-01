@@ -5,8 +5,15 @@ import java.util.Arrays;
 public class StringCalculator {
 
     public int add(String input) {
-        if (input.isEmpty()) return 0;
-        String[] numbers = input.split(",");
+
+        DelimiterParser parser = new DelimiterParser();
+        parser.parse(input);
+
+        String delimiter = parser.getDelmiter();
+        String normalizedInput = parser.getNormalizedInput();
+
+        if (normalizedInput.isEmpty()) return 0;
+        String[] numbers = normalizedInput.split(delimiter);
         return Arrays.stream(numbers)
                     .mapToInt(Integer::parseInt )
                     .sum();

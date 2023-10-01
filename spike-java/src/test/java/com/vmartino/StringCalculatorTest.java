@@ -24,7 +24,8 @@ public class StringCalculatorTest {
                 { "1", 1 }, // Stringa contenente un numero
                 { "1,2", 3 }, // Stringa contenente due numeri separati da virgola
                 { "1,2,3", 6 }, // Stringa contenente tre numeri separati da virgola
-                // Aggiungi altri casi di test qui
+                { "1,2\n3", 6 }, // Stringa contenente tre numeri separati da virgola con newline
+                { "//;\n1;3", 4 }, // String with delimiter configuration
             });
     }
 }
