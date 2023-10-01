@@ -4,13 +4,10 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class NumbersParser {
-
     private String normalizedInput;
     private String delimiter =",";
 
-    
     public Stream<Integer> numbers(String input) {
-        
         parse(input);
         
         if (normalizedInput.isEmpty()) return Stream.of(0);
