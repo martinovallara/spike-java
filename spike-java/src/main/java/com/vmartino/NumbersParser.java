@@ -1,8 +1,6 @@
 package com.vmartino;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class NumbersParser {
@@ -14,20 +12,10 @@ public class NumbersParser {
 
         if (normalizedInput.isEmpty())
             return Stream.of(0);
-        
-        String[] numbers = normalizedInput.split("\\" + delimiter);
-        
-        for (int i = 0; i < numbers.length; i++) {
 
-            String delimiterWithoutNumbers = numbers[i].replaceAll("\\d", "");
-            if (!delimiterWithoutNumbers.isEmpty()) {
-                String exceptionMessage = String.format("'%s' expected but '%s' found at position %d", delimiter,
-                        delimiterWithoutNumbers, i + 2);
+        String[] numbers = normalizedInput.split("\\" + delimiter); // add \\ to escape the delimiter
 
-                throw new IllegalArgumentException(exceptionMessage);
-            }
-
-        }
+        checkInvalidDelimiter(numbers);
 
         return Arrays.stream(numbers).mapToInt(Integer::parseInt).boxed();
     }
@@ -38,5 +26,31 @@ public class NumbersParser {
             input = input.substring(input.indexOf("\n") + 1);
         }
         normalizedInput = input.replace("\n", delimiter);
+    }
+
+    private void checkInvalidDelimiter(String[] numbers) {
+
+        Arrays.stream(numbers)
+                .filter(this::noNumbers)
+                .findFirst()
+                .ifPresent(this::throwInvalidDelimiterException);
+    }
+
+    private boolean noNumbers(String n) {
+        return !n.matches("\\d+");
+    }
+
+    private int getPosition(String delimiter) {
+        return normalizedInput.indexOf(delimiter);
+    }
+
+    private void throwInvalidDelimiterException(String itemWithInvalidDelimiter) {
+
+        String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("\\d", "");
+        throw new IllegalArgumentException(
+                String.format("'%s' expected but '%s' found at position %d",
+                        delimiter,
+                        invalidDelimiter,
+                        getPosition(invalidDelimiter)));
     }
 }
