@@ -1,17 +1,12 @@
 package com.vmartino;
 
-import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class Adder {
 
-    public int getSum(CalculatorParams params) {
+    private Adder() {}
 
-        String normalizedInput = params.normalizedInput();
-        if (normalizedInput.isEmpty()) return 0;
-        String[] numbers = normalizedInput.split(params.delimiter());
-        return Arrays.stream(numbers)
-                    .mapToInt(Integer::parseInt )
-                    .sum();
+    public static Integer getSum(Stream<Integer> numbers) {
+        return numbers.reduce(0, Integer::sum);
     }
-
 }
