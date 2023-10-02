@@ -2,7 +2,7 @@ package com.vmartino;
 
 public class StringCalculator {
 
-    public Integer add(String input) {
+    public String add(String input) {
 
         NumbersParser parser = new NumbersParser();
 

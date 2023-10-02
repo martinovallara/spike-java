@@ -37,7 +37,7 @@ public class NumbersParser {
     }
 
     private boolean noNumbers(String n) {
-        return !n.matches("\\d+");
+        return !n.matches("-?\\d+");
     }
 
     private int getPosition(String delimiter) {
