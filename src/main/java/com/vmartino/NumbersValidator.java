@@ -3,15 +3,11 @@ package com.vmartino;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NumbersValidator {
     private List<String> errorMessages;
-    private List<String> negativeNumbers;
     private ParsedData data;
     
     public NumbersValidator() {
@@ -22,15 +18,13 @@ public class NumbersValidator {
     }
 
     public void checkInvalidDelimiter() {
-        invalidDelimiter(data).stream()
+        invalidDelimiter(data)
                 .findFirst()
                 .ifPresent(this::addErrorsInvalidDelimiterMessage);
     }
 
     public void checkNegativeNumber() {
-        this.negativeNumbers = filterNegativeNumbers();
-
-        if (!negativeNumbers.isEmpty()) {
+        if (data.existNegativeNumbers()) {
             addErrorsNegativeNumber();
         }
     }
@@ -45,22 +39,8 @@ public class NumbersValidator {
     }
 
     private void addErrorsNegativeNumber() {
-        errorMessages.add(0, "Negative number(s) not allowed: " + getNegativeNumbersMessage());
+        errorMessages.add(0, "Negative number(s) not allowed: " + data.getNegativeNumbersMessage());
     }
-
-    private String getNegativeNumbersMessage() {
-        return negativeNumbers.stream().collect(Collectors.joining(", "));
-    }
-
-    private List<String> filterNegativeNumbers() {
-        return data.stringOfNumbers()
-                .flatMap((Function<String, Stream<String>>) inputString -> Pattern.compile("-\\d+")
-                        .matcher(inputString)
-                        .results()
-                        .map(MatchResult::group))
-                .collect(Collectors.toList());
-    }
-
 
     private void addErrorsInvalidDelimiterMessage(String itemWithInvalidDelimiter) {
 
@@ -72,10 +52,9 @@ public class NumbersValidator {
                         data.getPosition(invalidDelimiter)));
     }
 
-    public static List<String> invalidDelimiter(ParsedData data) {
+    public static Stream<String> invalidDelimiter(ParsedData data) {
         return data.stringOfNumbers()
                 .flatMap(s -> Arrays.stream(s.split("-?\\d+")))
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
+                .filter(s -> !s.isEmpty());
     }
 }
