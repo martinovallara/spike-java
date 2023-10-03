@@ -13,9 +13,6 @@ public class NumbersParser {
     public Stream<Integer> numbers(String input) {
         ParsedData parsedData = parse(input);
 
-        if (parsedData.isEmpty())
-            return Stream.of(0); // todo move to parsedData in mumbers
-
         validator.setData(parsedData);
         validator.checkInvalidDelimiter();
         validator.checkNegativeNumber();

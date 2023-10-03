@@ -29,7 +29,7 @@ public class ParsedData {
         this.delimiter = delimiter;
     }
 
-    public boolean isEmpty() {
+    private boolean isEmpty() {
         return getNormalizedInput().isEmpty();
     }
 
@@ -39,6 +39,8 @@ public class ParsedData {
     }
 
     public Stream<Integer> numbers() {
+        if (isEmpty()) return Stream.of(0); 
+        
         return stringOfNumbers().mapToInt(Integer::parseInt).boxed();
     }
 
