@@ -15,18 +15,11 @@ public class Adder {
     public String getSum(Stream<Integer> numbers) {
 
         if (validator.anyErrors()) return validator.getValidationMessage();
-        
+
         List<Integer> numberList = toList(numbers);
         return aStream(numberList).reduce(0, Integer::sum).toString();
     }
-    /* 
-    private static List<String> filterNegativeNumbers(List<Integer> numberList) {
-        return aStream(numberList)
-        .filter(n -> n < 0)
-        .map(Object::toString)
-        .collect(Collectors.toList());
-    }
-    */
+
     private static Stream<Integer> aStream(List<Integer> numbers) {
         return numbers.stream();     
     }

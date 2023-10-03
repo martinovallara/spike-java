@@ -2,8 +2,11 @@ package com.vmartino;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class NumbersValidator {
 
@@ -17,7 +20,9 @@ public class NumbersValidator {
         this.invalidDelimiterMessage = "";
     }
 
-    public void checkNegativeNumber(List<String> negativeNumbers) {
+    public void checkNegativeNumber(String[] numberList) {
+        List<String> negativeNumbers = filterNegativeNumbers(numberList);
+
         if (!negativeNumbers.isEmpty()) {
             this.negativeNumberNotAllowedMessage = "Negative number(s) not allowed: "
                     + getNegativeNumbers(negativeNumbers);
@@ -27,27 +32,25 @@ public class NumbersValidator {
     public String getValidationMessage() {
         List<String> errorMessages = Arrays.asList(negativeNumberNotAllowedMessage, invalidDelimiterMessage);
         return errorMessages.stream()
-        .filter(s -> !s.isEmpty())
-        .collect(Collectors.joining("\n"));
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining("\n"));
     }
+
     public boolean anyErrors() {
         return !negativeNumberNotAllowedMessage.isEmpty() || !invalidDelimiterMessage.isEmpty();
     }
-    
+
     private static String getNegativeNumbers(List<String> negativeNumbers) {
         return negativeNumbers.stream().collect(Collectors.joining(", "));
     }
 
-
-    public List<String> filterNegativeNumbers(String[] numberList) {
-        List<String> numbers = Arrays.stream(numberList)
-                .flatMap(inputString -> Pattern.compile("-\\d+")
+    private List<String> filterNegativeNumbers(String[] numberList) {
+        return Arrays.stream(numberList)
+                .flatMap((Function<String, Stream<String>>) inputString -> Pattern.compile("-\\d+")
                         .matcher(inputString)
                         .results()
-                        .map(matchResult -> matchResult.group()))
+                        .map(MatchResult::group))
                 .collect(Collectors.toList());
-
-        return numbers;
     }
 
     public void checkInvalidDelimiter(String[] numbers, String delimiter, String normalizedInput) {
@@ -70,7 +73,6 @@ public class NumbersValidator {
                 delimiter,
                 invalidDelimiter,
                 getPosition(invalidDelimiter));
-        // throw new IllegalArgumentException(invalidDelimiterMessage);
     }
 
     private int getPosition(String delimiter) {
