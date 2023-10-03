@@ -1,11 +1,9 @@
 package com.vmartino;
 
-import java.util.Arrays;
+
 import java.util.stream.Stream;
 
 public class NumbersParser {
-    private String normalizedInput;
-    private String delimiter = ",";
     private NumbersValidator validator;
 
     public NumbersParser(NumbersValidator validator) {
@@ -13,17 +11,16 @@ public class NumbersParser {
     }
 
     public Stream<Integer> numbers(String input) {
-        parse(input);
+        ParsedData parsedData = parse(input);
 
-        if (normalizedInput.isEmpty())
-            return Stream.of(0);
+        if (parsedData.isEmpty())
+            return Stream.of(0); // todo move to parsedData in mumbers
 
-        String[] numbers = getNumbers();
+        validator.setData(parsedData);
+        validator.checkInvalidDelimiter();
+        validator.checkNegativeNumber();
 
-        validator.checkInvalidDelimiter( delimiter, normalizedInput);
-        validator.checkNegativeNumber(numbers);
-
-        return Arrays.stream(numbers).mapToInt(Integer::parseInt).boxed();
+        return parsedData.numbers();
     }
 
     public static String[] getNumbers(String normalizedInput, String delimiter) {
@@ -31,15 +28,13 @@ public class NumbersParser {
         return normalizedInput.split(escape + delimiter); // add \\ to escape the delimiter
     }
 
-    private String[] getNumbers() {
-        return NumbersParser.getNumbers(normalizedInput, delimiter);
-    }
-
-    private void parse(String input) {
+    private ParsedData parse(String input) {
+        String delimiter = ",";
         if (input.startsWith("//")) {
             delimiter = input.substring(2, input.indexOf("\n"));
             input = input.substring(input.indexOf("\n") + 1);
         }
-        normalizedInput = input.replace("\n", delimiter);
+        String normalizedInput = input.replace("\n", delimiter);
+        return new ParsedData(normalizedInput, delimiter);
     }
 }

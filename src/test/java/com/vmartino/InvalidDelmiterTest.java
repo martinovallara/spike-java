@@ -10,30 +10,33 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class InvalidDelmiterTest {
     
+    private String input;
+    private String delimiter;
+
     @Test
     public void shouldReturnEmptywhenNoneIsInvalid() {
-        String input = "1,2";
-        String delimiter = ",";
-
-        assertThat(NumbersValidator.invalidDelimiter(input, delimiter),  empty());
+        this.input = "1,2";
+        this.delimiter = ",";
+        
+        assertThat(NumbersValidator.invalidDelimiter(parsedData()),  empty());
     }
     
     @Test
     public void shouldReturnOnewhenExistOnInvalidSingleCharDelimiter() {
-        String input = "1,2";
-        String delimiter = ";";
+        this.input = "1,2";
+        this.delimiter = ";";
 
-        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(input, delimiter);
+        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(parsedData());
         assertThat(invalidDelimiter.size(), is(1));
         assertThat(invalidDelimiter.get(0), is(","));
     }
 
     @Test
     public void shouldReturnTwoWhenExistTwoInvalidSingleCharDelimiter() {
-        String input = "1,2|3";
-        String delimiter = ";";
+        this.input = "1,2|3";
+        this.delimiter = ";";
 
-        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(input, delimiter);
+        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(parsedData());
         assertThat(invalidDelimiter.size(), is(2));
         assertThat(invalidDelimiter.get(0), is(","));
         assertThat(invalidDelimiter.get(1), is("|"));
@@ -41,13 +44,17 @@ public class InvalidDelmiterTest {
 
     @Test
     public void shouldReturnTwoWhenExistTwoInvalidStringDelimiter() {
-        String input = "1sep2||-3se4p5";
-        String delimiter = "sep";
+        this.input = "1sep2||-3se4p5";
+        this.delimiter = "sep";
 
-        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(input, delimiter);
+        List<String> invalidDelimiter = NumbersValidator.invalidDelimiter(parsedData());
         assertThat(invalidDelimiter.size(), is(3));
         assertThat(invalidDelimiter.get(0), is("||"));
         assertThat(invalidDelimiter.get(1), is("se"));
         assertThat(invalidDelimiter.get(2), is("p"));
+    }
+
+    private ParsedData parsedData() {
+        return new ParsedData(input, delimiter);
     }
 }

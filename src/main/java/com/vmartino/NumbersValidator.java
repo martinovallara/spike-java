@@ -10,25 +10,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NumbersValidator {
-
-    private String delimiter;
-    private String normalizedInput;
     private List<String> errorMessages;
     private List<String> negativeNumbers;
-
+    private ParsedData data;
+    
     public NumbersValidator() {
         this.errorMessages = new ArrayList<>();
     }
-    public void checkInvalidDelimiter(String delimiter, String normalizedInput) {
-        this.delimiter = delimiter;
-        this.normalizedInput = normalizedInput;
+    public void setData(ParsedData parsedData) {
+        this.data = parsedData;
+    }
 
-        invalidDelimiter(normalizedInput, delimiter).stream()
+    public void checkInvalidDelimiter() {
+        invalidDelimiter(data).stream()
                 .findFirst()
                 .ifPresent(this::addErrorsInvalidDelimiterMessage);
     }
-    public void checkNegativeNumber(String[] numberList) {
-        this.negativeNumbers = filterNegativeNumbers(numberList);
+
+    public void checkNegativeNumber() {
+        this.negativeNumbers = filterNegativeNumbers();
 
         if (!negativeNumbers.isEmpty()) {
             addErrorsNegativeNumber();
@@ -52,8 +52,8 @@ public class NumbersValidator {
         return negativeNumbers.stream().collect(Collectors.joining(", "));
     }
 
-    private List<String> filterNegativeNumbers(String[] numberList) {
-        return Arrays.stream(numberList)
+    private List<String> filterNegativeNumbers() {
+        return data.stringOfNumbers()
                 .flatMap((Function<String, Stream<String>>) inputString -> Pattern.compile("-\\d+")
                         .matcher(inputString)
                         .results()
@@ -67,23 +67,15 @@ public class NumbersValidator {
         String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("-?\\d", "");
         this.errorMessages.add(0,
                 String.format("'%s' expected but '%s' found at position %d",
-                        delimiter,
+                        data.getDelimiter(),
                         invalidDelimiter,
-                        getPosition(invalidDelimiter)));
+                        data.getPosition(invalidDelimiter)));
     }
 
-    private int getPosition(String delimiter) {
-        return normalizedInput.indexOf(delimiter);
-    }
-
-    public static List<String> invalidDelimiter(String input, String delimiter) {
-
-        String[] itemByDelmiter = NumbersParser.getNumbers(input, delimiter);
-
-        return Arrays.stream(itemByDelmiter)
+    public static List<String> invalidDelimiter(ParsedData data) {
+        return data.stringOfNumbers()
                 .flatMap(s -> Arrays.stream(s.split("-?\\d+")))
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
-
     }
 }
