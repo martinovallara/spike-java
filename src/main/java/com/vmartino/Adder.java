@@ -1,7 +1,5 @@
 package com.vmartino;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Adder {
@@ -14,8 +12,16 @@ public class Adder {
 
     public String getSum(Stream<Integer> numbers) {
 
-        if (validator.anyErrors()) return validator.getValidationMessage();
+        if (validator.anyErrors())
+            return validator.getValidationMessage();
 
-        return numbers.reduce(0, Integer::sum).toString();
+        return numbers
+                .filter(this::onlyUpTo1000)
+                .reduce(0, Integer::sum)
+                .toString();
+    }
+
+    private boolean onlyUpTo1000(Integer x) {
+        return x <= 1000;
     }
 }

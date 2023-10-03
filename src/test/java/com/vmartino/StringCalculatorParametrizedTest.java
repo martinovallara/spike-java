@@ -27,6 +27,8 @@ public class StringCalculatorParametrizedTest {
                 { "1,2\n3", "6" }, // Stringa contenente tre numeri separati da virgola con newline
                 { "//;\n1;3", "4" }, // String with delimiter configuration
                 { "//sep\n1sep2sep3", "6" }, // String with long delimiter configuration
+                {"2,1000", "1002" }, // Stringa contenente il numero max sommabile
+                {"1,1001", "1" }, // Stringa contenente il numero min non sommabile 
         });
     }
 }
