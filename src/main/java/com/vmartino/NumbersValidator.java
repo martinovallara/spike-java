@@ -23,7 +23,7 @@ public class NumbersValidator {
         List<String> negativeNumbers = filterNegativeNumbers(numberList);
 
         if (!negativeNumbers.isEmpty()) {
-            errorMessages.add(0,"Negative number(s) not allowed: " + getNegativeNumbers(negativeNumbers));
+            errorMessages.add(0, "Negative number(s) not allowed: " + getNegativeNumbers(negativeNumbers));
         }
     }
 
@@ -49,19 +49,13 @@ public class NumbersValidator {
                 .collect(Collectors.toList());
     }
 
-    public void checkInvalidDelimiter(String[] numbers, String delimiter, String normalizedInput) {
+    public void checkInvalidDelimiter(String delimiter, String normalizedInput) {
         this.delimiter = delimiter;
         this.normalizedInput = normalizedInput;
 
-        
-        Arrays.stream(numbers)
-                .filter(this::noNumbers)
+        invalidDelimiter(normalizedInput, delimiter).stream()
                 .findFirst()
                 .ifPresent(this::throwInvalidDelimiterException);
-    }
-
-    private boolean noNumbers(String n) {
-        return !n.matches("-?\\d+");
     }
 
     private void throwInvalidDelimiterException(String itemWithInvalidDelimiter) {
@@ -76,5 +70,16 @@ public class NumbersValidator {
 
     private int getPosition(String delimiter) {
         return normalizedInput.indexOf(delimiter);
+    }
+
+    public static List<String> invalidDelimiter(String input, String delimiter) {
+
+        String[] itemByDelmiter = NumbersParser.getNumbers(input, delimiter);
+
+        return Arrays.stream(itemByDelmiter)
+                .flatMap(s -> Arrays.stream(s.split("-?\\d+")))
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+
     }
 }

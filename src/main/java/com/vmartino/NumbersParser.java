@@ -20,7 +20,7 @@ public class NumbersParser {
 
         String[] numbers = getNumbers();
 
-        validator.checkInvalidDelimiter(numbers, delimiter, normalizedInput);
+        validator.checkInvalidDelimiter( delimiter, normalizedInput);
         validator.checkNegativeNumber(numbers);
 
         return Arrays.stream(numbers).mapToInt(Integer::parseInt).boxed();
