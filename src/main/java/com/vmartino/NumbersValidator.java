@@ -14,16 +14,24 @@ public class NumbersValidator {
     private String delimiter;
     private String normalizedInput;
     private List<String> errorMessages;
+    private List<String> negativeNumbers;
 
     public NumbersValidator() {
         this.errorMessages = new ArrayList<>();
     }
+    public void checkInvalidDelimiter(String delimiter, String normalizedInput) {
+        this.delimiter = delimiter;
+        this.normalizedInput = normalizedInput;
 
+        invalidDelimiter(normalizedInput, delimiter).stream()
+                .findFirst()
+                .ifPresent(this::addErrorsInvalidDelimiterMessage);
+    }
     public void checkNegativeNumber(String[] numberList) {
-        List<String> negativeNumbers = filterNegativeNumbers(numberList);
+        this.negativeNumbers = filterNegativeNumbers(numberList);
 
         if (!negativeNumbers.isEmpty()) {
-            errorMessages.add(0, "Negative number(s) not allowed: " + getNegativeNumbers(negativeNumbers));
+            addErrorsNegativeNumber();
         }
     }
 
@@ -36,7 +44,11 @@ public class NumbersValidator {
         return !errorMessages.isEmpty();
     }
 
-    private static String getNegativeNumbers(List<String> negativeNumbers) {
+    private void addErrorsNegativeNumber() {
+        errorMessages.add(0, "Negative number(s) not allowed: " + getNegativeNumbersMessage());
+    }
+
+    private String getNegativeNumbersMessage() {
         return negativeNumbers.stream().collect(Collectors.joining(", "));
     }
 
@@ -49,16 +61,8 @@ public class NumbersValidator {
                 .collect(Collectors.toList());
     }
 
-    public void checkInvalidDelimiter(String delimiter, String normalizedInput) {
-        this.delimiter = delimiter;
-        this.normalizedInput = normalizedInput;
 
-        invalidDelimiter(normalizedInput, delimiter).stream()
-                .findFirst()
-                .ifPresent(this::throwInvalidDelimiterException);
-    }
-
-    private void throwInvalidDelimiterException(String itemWithInvalidDelimiter) {
+    private void addErrorsInvalidDelimiterMessage(String itemWithInvalidDelimiter) {
 
         String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("-?\\d", "");
         this.errorMessages.add(0,
