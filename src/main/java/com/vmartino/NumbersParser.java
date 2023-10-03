@@ -20,11 +20,6 @@ public class NumbersParser {
         return parsedData.numbers();
     }
 
-    public static String[] getNumbers(String normalizedInput, String delimiter) {
-        String escape = delimiter.length() == 1 ? "\\" : "";
-        return normalizedInput.split(escape + delimiter); // add \\ to escape the delimiter
-    }
-
     private ParsedData parse(String input) {
         String delimiter = ",";
         if (input.startsWith("//")) {

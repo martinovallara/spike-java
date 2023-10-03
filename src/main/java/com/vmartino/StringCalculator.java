@@ -9,8 +9,6 @@ public class StringCalculator {
 
         NumbersParser parser = new NumbersParser(validator);
 
-        
-
         Stream<Integer> numbers = parser.numbers(input);
         return new Adder(validator).getSum(numbers);
     }

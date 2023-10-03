@@ -16,15 +16,6 @@ public class Adder {
 
         if (validator.anyErrors()) return validator.getValidationMessage();
 
-        List<Integer> numberList = toList(numbers);
-        return aStream(numberList).reduce(0, Integer::sum).toString();
-    }
-
-    private static Stream<Integer> aStream(List<Integer> numbers) {
-        return numbers.stream();     
-    }
-    
-    private static List<Integer> toList(Stream<Integer> numbers) {
-        return numbers.collect(Collectors.toList());
+        return numbers.reduce(0, Integer::sum).toString();
     }
 }
