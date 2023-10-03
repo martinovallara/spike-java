@@ -1,5 +1,6 @@
 package com.vmartino;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -10,34 +11,29 @@ import java.util.stream.Stream;
 
 public class NumbersValidator {
 
-    private String negativeNumberNotAllowedMessage;
     private String delimiter;
     private String normalizedInput;
-    private String invalidDelimiterMessage;
+    private List<String> errorMessages;
 
     public NumbersValidator() {
-        this.negativeNumberNotAllowedMessage = "";
-        this.invalidDelimiterMessage = "";
+        this.errorMessages = new ArrayList<>();
     }
 
     public void checkNegativeNumber(String[] numberList) {
         List<String> negativeNumbers = filterNegativeNumbers(numberList);
 
         if (!negativeNumbers.isEmpty()) {
-            this.negativeNumberNotAllowedMessage = "Negative number(s) not allowed: "
-                    + getNegativeNumbers(negativeNumbers);
+            errorMessages.add(0,"Negative number(s) not allowed: " + getNegativeNumbers(negativeNumbers));
         }
     }
 
     public String getValidationMessage() {
-        List<String> errorMessages = Arrays.asList(negativeNumberNotAllowedMessage, invalidDelimiterMessage);
         return errorMessages.stream()
-                .filter(s -> !s.isEmpty())
                 .collect(Collectors.joining("\n"));
     }
 
     public boolean anyErrors() {
-        return !negativeNumberNotAllowedMessage.isEmpty() || !invalidDelimiterMessage.isEmpty();
+        return !errorMessages.isEmpty();
     }
 
     private static String getNegativeNumbers(List<String> negativeNumbers) {
@@ -56,6 +52,8 @@ public class NumbersValidator {
     public void checkInvalidDelimiter(String[] numbers, String delimiter, String normalizedInput) {
         this.delimiter = delimiter;
         this.normalizedInput = normalizedInput;
+
+        
         Arrays.stream(numbers)
                 .filter(this::noNumbers)
                 .findFirst()
@@ -69,10 +67,11 @@ public class NumbersValidator {
     private void throwInvalidDelimiterException(String itemWithInvalidDelimiter) {
 
         String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("-?\\d", "");
-        this.invalidDelimiterMessage = String.format("'%s' expected but '%s' found at position %d",
-                delimiter,
-                invalidDelimiter,
-                getPosition(invalidDelimiter));
+        this.errorMessages.add(0,
+                String.format("'%s' expected but '%s' found at position %d",
+                        delimiter,
+                        invalidDelimiter,
+                        getPosition(invalidDelimiter)));
     }
 
     private int getPosition(String delimiter) {

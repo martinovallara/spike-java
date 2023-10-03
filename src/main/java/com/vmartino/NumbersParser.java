@@ -18,15 +18,21 @@ public class NumbersParser {
         if (normalizedInput.isEmpty())
             return Stream.of(0);
 
-        String[] numbers;
-        String escape = delimiter.length() == 1 ? "\\" : "";
-
-        numbers = normalizedInput.split(escape + delimiter); // add \\ to escape the delimiter
+        String[] numbers = getNumbers();
 
         validator.checkInvalidDelimiter(numbers, delimiter, normalizedInput);
         validator.checkNegativeNumber(numbers);
 
         return Arrays.stream(numbers).mapToInt(Integer::parseInt).boxed();
+    }
+
+    public static String[] getNumbers(String normalizedInput, String delimiter) {
+        String escape = delimiter.length() == 1 ? "\\" : "";
+        return normalizedInput.split(escape + delimiter); // add \\ to escape the delimiter
+    }
+
+    private String[] getNumbers() {
+        return NumbersParser.getNumbers(normalizedInput, delimiter);
     }
 
     private void parse(String input) {
