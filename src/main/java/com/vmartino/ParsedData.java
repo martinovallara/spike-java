@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ParsedData {
+public class ParsedData implements ParsedDataInfo {
 
     private String normalizedInput;
     private String delimiter;
@@ -25,7 +25,8 @@ public class ParsedData {
     public void setNormalizedInput(String normalizedInput) {
         this.normalizedInput = normalizedInput;
     }
-
+    
+    @Override
     public String getDelimiter() {
         return delimiter;
     }
@@ -49,7 +50,8 @@ public class ParsedData {
 
         return stringOfNumbers().mapToInt(Integer::parseInt).boxed();
     }
-
+    
+    @Override
     public int getPosition(String text) {
         return normalizedInput.indexOf(text);
     }

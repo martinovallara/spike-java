@@ -1,20 +1,15 @@
 package com.vmartino;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NumbersValidator {
-    private List<String> errorMessages;
+    private ErrorMessages errorMessages;
     private ParsedData data;
     
-    public NumbersValidator() {
-        this.errorMessages = new ArrayList<>();
-    }
     public void setData(ParsedData parsedData) {
         this.data = parsedData;
+        this.errorMessages = new ErrorMessages(parsedData);
     }
 
     public void checkInvalidDelimiter() {
@@ -25,31 +20,20 @@ public class NumbersValidator {
 
     public void checkNegativeNumber() {
         if (data.existNegativeNumbers()) {
-            addErrorsNegativeNumber();
+            errorMessages.addErrorsNegativeNumber(data.getNegativeNumbersMessage());
         }
     }
 
     public String getValidationMessage() {
-        return errorMessages.stream()
-                .collect(Collectors.joining("\n"));
+        return errorMessages.getValidationMessage();
     }
 
     public boolean anyErrors() {
-        return !errorMessages.isEmpty();
-    }
-
-    private void addErrorsNegativeNumber() {
-        errorMessages.add(0, "Negative number(s) not allowed: " + data.getNegativeNumbersMessage());
+        return errorMessages.anyErrors();
     }
 
     private void addErrorsInvalidDelimiterMessage(String itemWithInvalidDelimiter) {
-
-        String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("-?\\d", "");
-        this.errorMessages.add(0,
-                String.format("'%s' expected but '%s' found at position %d",
-                        data.getDelimiter(),
-                        invalidDelimiter,
-                        data.getPosition(invalidDelimiter)));
+        errorMessages.addErrorsInvalidDelimiterMessage(itemWithInvalidDelimiter);
     }
 
     public static Stream<String> invalidDelimiter(ParsedData data) {
