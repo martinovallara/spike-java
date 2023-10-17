@@ -5,11 +5,11 @@ import java.util.stream.Stream;
 
 public class NumbersValidator {
     private ErrorMessages errorMessages;
-    private ParsedData data;
-    
-    public void setData(ParsedData parsedData) {
-        this.data = parsedData;
-        this.errorMessages = new ErrorMessages(parsedData);
+    private InputDataQuery data;
+
+    public NumbersValidator(InputDataQuery data, ErrorMessages errorMessages) {
+        this.data = data;
+        this.errorMessages = errorMessages;
     }
 
     public void checkInvalidDelimiter() {
@@ -36,7 +36,7 @@ public class NumbersValidator {
         errorMessages.addErrorsInvalidDelimiterMessage(itemWithInvalidDelimiter);
     }
 
-    public static Stream<String> invalidDelimiter(ParsedData data) {
+    public static Stream<String> invalidDelimiter(InputDataQuery data) {
         return data.stringOfNumbers()
                 .flatMap(s -> Arrays.stream(s.split("-?\\d+")))
                 .filter(s -> !s.isEmpty());

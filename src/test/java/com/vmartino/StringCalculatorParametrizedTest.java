@@ -1,6 +1,5 @@
 package com.vmartino;
 
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Arrays;
@@ -13,9 +12,18 @@ public class StringCalculatorParametrizedTest {
 
     @ParameterizedTest
     @MethodSource("inputAndExpectedValuesProvider")
-    public void shouldReturnExpectedResult(String input, String expected) {
-        StringCalculator calculator = new StringCalculator();
+    void shouldReturnExpectedResult(String input, String expected) {
+        StringCalculator calculator = BuildStringCalculator();
         assertThat(calculator.add(input), is(expected));
+    }
+
+    private StringCalculator BuildStringCalculator() {
+        InputDataQuery parsedData = new InputDataQuery();
+        ErrorMessages errorMessages = new ErrorMessages(parsedData);
+        NumbersValidator validator = new NumbersValidator(parsedData, errorMessages);
+        Adder adder = new Adder(validator);
+        NumbersParser parser = new NumbersParser(validator, parsedData);
+        return new StringCalculator(adder, parser);
     }
 
     public static Collection<Object[]> inputAndExpectedValuesProvider() {

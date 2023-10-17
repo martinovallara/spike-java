@@ -8,12 +8,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ParsedData implements ParsedDataInfo {
+public class InputDataQuery implements ErrorsQuery {
 
     private String normalizedInput;
     private String delimiter;
 
-    public ParsedData(String normalizedInput, String delimiter) {
+    public void setData(String normalizedInput, String delimiter) {
+
         this.setNormalizedInput(normalizedInput);
         this.setDelimiter(delimiter);
     }
@@ -25,7 +26,7 @@ public class ParsedData implements ParsedDataInfo {
     public void setNormalizedInput(String normalizedInput) {
         this.normalizedInput = normalizedInput;
     }
-    
+
     @Override
     public String getDelimiter() {
         return delimiter;

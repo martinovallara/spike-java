@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 public class ErrorMessages {
 
     private List<String> messages;
-    private ParsedDataInfo dataInfo;
+    private ErrorsQuery errorsQuery;
 
 
-    public ErrorMessages(ParsedDataInfo dataInfo) {
+    public ErrorMessages(ErrorsQuery errorsQuery) {
         this.messages = new ArrayList<>();
-        this.dataInfo = dataInfo;
+        this.errorsQuery = errorsQuery;
     }
 
     public void addErrorsNegativeNumber(String negativeNumbers) {
@@ -27,9 +27,9 @@ public class ErrorMessages {
         String invalidDelimiter = itemWithInvalidDelimiter.replaceAll("-?\\d", "");
         this.messages.add(0,
                 String.format("'%s' expected but '%s' found at position %d",
-                        this.dataInfo.getDelimiter(),
+                        this.errorsQuery.getDelimiter(),
                         invalidDelimiter,
-                        this.dataInfo.getPosition(invalidDelimiter)));
+                        this.errorsQuery.getPosition(invalidDelimiter)));
     }
 
     public String getValidationMessage() {

@@ -1,6 +1,6 @@
 package com.vmartino;
 
-public interface ParsedDataInfo {
+public interface ErrorsQuery {
 
     String getDelimiter();
 

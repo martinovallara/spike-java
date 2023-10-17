@@ -4,12 +4,16 @@ import java.util.stream.Stream;
 
 public class StringCalculator {
 
+    private NumbersParser parser;
+    private Adder adder;
+
+    public StringCalculator(Adder adder, NumbersParser parser) {
+        this.parser = parser;
+        this.adder = adder;
+    }
+
     public String add(String input) {
-        NumbersValidator validator = new NumbersValidator();
-
-        NumbersParser parser = new NumbersParser(validator);
-
         Stream<Integer> numbers = parser.numbers(input);
-        return new Adder(validator).getSum(numbers);
+        return adder.getSum(numbers);
     }
 }

@@ -5,28 +5,42 @@ import java.util.stream.Stream;
 
 public class NumbersParser {
     private NumbersValidator validator;
+    private InputDataQuery inputDataQuery;
 
-    public NumbersParser(NumbersValidator validator) {
+    public NumbersParser(NumbersValidator validator, InputDataQuery inputDataQuery) {
         this.validator = validator;
+        this.inputDataQuery = inputDataQuery;
     }
 
     public Stream<Integer> numbers(String input) {
-        ParsedData parsedData = parse(input);
-
-        validator.setData(parsedData);
+        parse(input);
+        
         validator.checkInvalidDelimiter();
         validator.checkNegativeNumber();
 
-        return parsedData.numbers();
+        return inputDataQuery.numbers();
     }
 
-    private ParsedData parse(String input) {
+    private void parse(String input) {
         String delimiter = ",";
-        if (input.startsWith("//")) {
-            delimiter = input.substring(2, input.indexOf("\n"));
-            input = input.substring(input.indexOf("\n") + 1);
+        if (existDelimiterConfiguration(input)) {
+            delimiter = getDelimiterFromConfiguration(input);
+            input = extractInput(input);
         }
         String normalizedInput = input.replace("\n", delimiter);
-        return new ParsedData(normalizedInput, delimiter);
+
+        inputDataQuery.setData(normalizedInput, delimiter);
+    }
+
+    private boolean existDelimiterConfiguration(String input) {
+        return input.startsWith("//");
+    }
+
+    private String extractInput(String input) {
+        return input.substring(input.indexOf("\n") + 1);
+    }
+
+    private String getDelimiterFromConfiguration(String input) {
+        return input.substring(2, input.indexOf("\n"));
     }
 }

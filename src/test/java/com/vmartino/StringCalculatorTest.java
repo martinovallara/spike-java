@@ -1,28 +1,39 @@
 package com.vmartino;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
-public class StringCalculatorTest {
+class StringCalculatorTest {
+
+    private StringCalculator calculator;
+
+    @BeforeEach
+    public void setUp() {
+        InputDataQuery parsedData = new InputDataQuery();
+        ErrorMessages errorMessages = new ErrorMessages(parsedData);
+        NumbersValidator validator = new NumbersValidator(parsedData, errorMessages);
+        Adder adder = new Adder(validator);
+        NumbersParser parser = new NumbersParser(validator, parsedData);
+        calculator = new StringCalculator(adder, parser);
+    }
 
     @Test
-    public void testShouldReturnErrorWhenDelimiterIsInvalid() {
-        StringCalculator calculator = new StringCalculator();
+    void testShouldReturnErrorWhenDelimiterIsInvalid() {
         assertEquals("'|' expected but ',' found at position 3", calculator.add("//|\n1|2,3"));
     }
 
     @Test
-    public void shouldReturnMessageNumberIsNotAllowed() {
-        StringCalculator calculator = new StringCalculator();
+    void shouldReturnMessageNumberIsNotAllowed() {
         assertThat(calculator.add("1,-2"), is("Negative number(s) not allowed: -2"));
     }
 
     @Test
-    public void shouldReturnMessageaNumberIsNotAllowedAndInvalidDelimiter() {
-        StringCalculator calculator = new StringCalculator();
-        assertThat(calculator.add("//|\n1|2,-3"), is("Negative number(s) not allowed: -3\n'|' expected but ',' found at position 3"));
-    } 
+    void shouldReturnMessageaNumberIsNotAllowedAndInvalidDelimiter() {
+        assertThat(calculator.add("//|\n1|2,-3"),
+                is("Negative number(s) not allowed: -3\n'|' expected but ',' found at position 3"));
+    }
 }

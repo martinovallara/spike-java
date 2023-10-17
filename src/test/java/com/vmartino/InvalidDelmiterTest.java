@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.*;
 
-public class InvalidDelmiterTest {
+class InvalidDelmiterTest {
 
     private String input;
     private String delimiter;
 
     @Test
-    public void shouldReturnEmptywhenNoneIsInvalid() {
+    void shouldReturnEmptywhenNoneIsInvalid() {
         this.input = "1,2";
         this.delimiter = ",";
 
@@ -23,12 +23,12 @@ public class InvalidDelmiterTest {
     }
 
     private List<String> getInvalidDelimiters() {
-        return NumbersValidator.invalidDelimiter(parsedData())
+        return NumbersValidator.invalidDelimiter(inputDataQuery())
                 .collect(Collectors.toList());
     }
 
     @Test
-    public void shouldReturnOnewhenExistOnInvalidSingleCharDelimiter() {
+    void shouldReturnOnewhenExistOnInvalidSingleCharDelimiter() {
         this.input = "1,2";
         this.delimiter = ";";
 
@@ -38,7 +38,7 @@ public class InvalidDelmiterTest {
     }
 
     @Test
-    public void shouldReturnTwoWhenExistTwoInvalidSingleCharDelimiter() {
+    void shouldReturnTwoWhenExistTwoInvalidSingleCharDelimiter() {
         this.input = "1,2|3";
         this.delimiter = ";";
 
@@ -49,7 +49,7 @@ public class InvalidDelmiterTest {
     }
 
     @Test
-    public void shouldReturnTwoWhenExistTwoInvalidStringDelimiter() {
+    void shouldReturnTwoWhenExistTwoInvalidStringDelimiter() {
         this.input = "1sep2||-3se4p5";
         this.delimiter = "sep";
 
@@ -60,7 +60,9 @@ public class InvalidDelmiterTest {
         assertThat(invalidDelimiter.get(2), is("p"));
     }
 
-    private ParsedData parsedData() {
-        return new ParsedData(input, delimiter);
+    private InputDataQuery inputDataQuery() {
+        InputDataQuery inputDataQuery = new InputDataQuery();
+        inputDataQuery.setData(input, delimiter);
+        return inputDataQuery;
     }
 }
