@@ -3,6 +3,7 @@ package com.vmartino;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ErrorMessages {
 
@@ -15,8 +16,8 @@ public class ErrorMessages {
         this.errorsQuery = errorsQuery;
     }
 
-    public void addErrorsNegativeNumber(String negativeNumbers) {
-        messages.add(0, "Negative number(s) not allowed: " + negativeNumbers);
+    public void addErrorsNegativeNumber(Stream<String> negativeNumbers) {
+        messages.add(0, "Negative number(s) not allowed: " + negativeNumbers.collect(Collectors.joining(", ")));
     }
 
     public boolean anyErrors() {

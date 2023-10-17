@@ -23,7 +23,7 @@ class InvalidDelmiterTest {
     }
 
     private List<String> getInvalidDelimiters() {
-        return NumbersValidator.invalidDelimiter(inputDataQuery())
+        return inputDataQuery().invalidDelimiter()
                 .collect(Collectors.toList());
     }
 

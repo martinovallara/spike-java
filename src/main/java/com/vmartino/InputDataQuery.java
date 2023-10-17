@@ -61,8 +61,8 @@ public class InputDataQuery implements ErrorsQuery {
         return !filterNegativeNumbers().isEmpty();
     }
 
-    public String getNegativeNumbersMessage() {
-        return filterNegativeNumbers().stream().collect(Collectors.joining(", "));
+    public Stream<String> getNegativeNumbersMessage() {
+        return filterNegativeNumbers().stream();
     }
     private List<String> filterNegativeNumbers() {
         return stringOfNumbers()
@@ -71,5 +71,11 @@ public class InputDataQuery implements ErrorsQuery {
                         .results()
                         .map(MatchResult::group))
                 .collect(Collectors.toList());
+    }
+
+    public Stream<String> invalidDelimiter() {
+        return stringOfNumbers()
+                .flatMap(s -> Arrays.stream(s.split("-?\\d+")))
+                .filter(s -> !s.isEmpty());
     }
 }

@@ -13,12 +13,12 @@ class StringCalculatorTest {
 
     @BeforeEach
     public void setUp() {
-        InputDataQuery parsedData = new InputDataQuery();
-        ErrorMessages errorMessages = new ErrorMessages(parsedData);
-        NumbersValidator validator = new NumbersValidator(parsedData, errorMessages);
-        Adder adder = new Adder(validator);
-        NumbersParser parser = new NumbersParser(validator, parsedData);
-        calculator = new StringCalculator(adder, parser);
+        InputDataQuery inputDataQuery = new InputDataQuery();
+        ErrorMessages errorMessages = new ErrorMessages(inputDataQuery);
+        NumbersValidator validator = new NumbersValidator(inputDataQuery, errorMessages);
+        Adder adder = new Adder();
+        NumbersParser parser = new NumbersParser(validator, inputDataQuery);
+        calculator = new StringCalculator(adder, parser, validator);
     }
 
     @Test
