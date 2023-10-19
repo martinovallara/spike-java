@@ -4,9 +4,12 @@ public class NumbersValidator {
     private ErrorMessages errorMessages;
     private InputDataQuery inputDataQuery;
 
-    public NumbersValidator(InputDataQuery inputDataQuery, ErrorMessages errorMessages) {
-        this.inputDataQuery = inputDataQuery;
+    public NumbersValidator( ErrorMessages errorMessages) {
         this.errorMessages = errorMessages;
+    }
+
+    public void setInputDataQuery(InputDataQuery inputDataQuery) {
+        this.inputDataQuery = inputDataQuery;
     }
 
     public void checkInvalidDelimiter() {

@@ -15,7 +15,7 @@ class StringCalculatorTest {
     public void setUp() {
         InputDataQuery inputDataQuery = new InputDataQuery();
         ErrorMessages errorMessages = new ErrorMessages(inputDataQuery);
-        NumbersValidator validator = new NumbersValidator(inputDataQuery, errorMessages);
+        NumbersValidator validator = new NumbersValidator(errorMessages);
         Adder adder = new Adder();
         NumbersParser parser = new NumbersParser(validator, inputDataQuery);
         calculator = new StringCalculator(adder, parser, validator);

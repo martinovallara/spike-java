@@ -15,6 +15,7 @@ public class NumbersParser {
     public Stream<Integer> numbers(String input) {
         parse(input);
         
+        validator.setInputDataQuery(inputDataQuery);
         validator.checkInvalidDelimiter();
         validator.checkNegativeNumber();
 
