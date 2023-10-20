@@ -2,6 +2,7 @@ package com.vmartino;
 
 import java.util.stream.Stream;
 
+
 public class StringCalculator {
 
     private NumbersParser parser;

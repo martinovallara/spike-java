@@ -5,21 +5,21 @@ import java.util.stream.Stream;
 
 public class NumbersParser {
     private NumbersValidator validator;
-    private InputDataQuery inputDataQuery;
+    private CalculatorRequest calculatorRequest;
 
-    public NumbersParser(NumbersValidator validator, InputDataQuery inputDataQuery) {
+    public NumbersParser(NumbersValidator validator, CalculatorRequest calculatorRequest) {
         this.validator = validator;
-        this.inputDataQuery = inputDataQuery;
+        this.calculatorRequest = calculatorRequest;
     }
 
     public Stream<Integer> numbers(String input) {
         parse(input);
         
-        validator.setInputDataQuery(inputDataQuery);
+        validator.setCalculatorRequest(calculatorRequest);
         validator.checkInvalidDelimiter();
         validator.checkNegativeNumber();
 
-        return inputDataQuery.numbers();
+        return calculatorRequest.numbers();
     }
 
     private void parse(String input) {
@@ -30,7 +30,7 @@ public class NumbersParser {
         }
         String normalizedInput = input.replace("\n", delimiter);
 
-        inputDataQuery.setData(normalizedInput, delimiter);
+        calculatorRequest.setData(normalizedInput, delimiter);
     }
 
     private boolean existDelimiterConfiguration(String input) {

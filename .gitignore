@@ -27,3 +27,5 @@ build/
 
 # File di configurazione di Gradle
 .gradle/
+
+tmp/

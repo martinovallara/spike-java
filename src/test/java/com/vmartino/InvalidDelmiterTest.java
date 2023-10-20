@@ -23,7 +23,7 @@ class InvalidDelmiterTest {
     }
 
     private List<String> getInvalidDelimiters() {
-        return inputDataQuery().invalidDelimiter()
+        return calculatorRequest().invalidDelimiter()
                 .collect(Collectors.toList());
     }
 
@@ -60,9 +60,9 @@ class InvalidDelmiterTest {
         assertThat(invalidDelimiter.get(2), is("p"));
     }
 
-    private InputDataQuery inputDataQuery() {
-        InputDataQuery inputDataQuery = new InputDataQuery();
-        inputDataQuery.setData(input, delimiter);
-        return inputDataQuery;
+    private CalculatorRequest calculatorRequest() {
+        CalculatorRequest calculatorRequest = new CalculatorRequest();
+        calculatorRequest.setData(input, delimiter);
+        return calculatorRequest;
     }
 }

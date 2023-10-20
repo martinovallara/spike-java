@@ -2,25 +2,25 @@ package com.vmartino;
 
 public class NumbersValidator {
     private ErrorMessages errorMessages;
-    private InputDataQuery inputDataQuery;
+    private CalculatorRequest calculatorRequest;
 
     public NumbersValidator( ErrorMessages errorMessages) {
         this.errorMessages = errorMessages;
     }
 
-    public void setInputDataQuery(InputDataQuery inputDataQuery) {
-        this.inputDataQuery = inputDataQuery;
+    public void setCalculatorRequest(CalculatorRequest calculatorRequest) {
+        this.calculatorRequest = calculatorRequest;
     }
 
     public void checkInvalidDelimiter() {
-        inputDataQuery.invalidDelimiter()
+        calculatorRequest.invalidDelimiter()
             .findFirst()
             .ifPresent(this::addErrorsInvalidDelimiterMessage);
     }
 
     public void checkNegativeNumber() {
-        if (inputDataQuery.existNegativeNumbers()) {
-            errorMessages.addErrorsNegativeNumber(inputDataQuery.getNegativeNumbersMessage());
+        if (calculatorRequest.existNegativeNumbers()) {
+            errorMessages.addErrorsNegativeNumber(calculatorRequest.getNegativeNumbersMessage());
         }
     }
 

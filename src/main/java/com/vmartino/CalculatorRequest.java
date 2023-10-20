@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class InputDataQuery implements ErrorsQuery {
+public class CalculatorRequest implements ErrorsQuery {
 
     private String normalizedInput;
     private String delimiter;
