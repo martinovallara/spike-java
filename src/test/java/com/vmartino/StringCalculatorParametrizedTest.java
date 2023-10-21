@@ -18,11 +18,9 @@ public class StringCalculatorParametrizedTest {
     }
 
     private StringCalculator BuildStringCalculator() {
-        CalculatorRequest calculatorRequest = new CalculatorRequest();
-        ErrorMessages errorMessages = new ErrorMessages(calculatorRequest);
-        NumbersValidator validator = new NumbersValidator(errorMessages);
+        RequestValidator validator = new RequestValidator();
         Adder adder = new Adder();
-        NumbersParser parser = new NumbersParser(validator, calculatorRequest);
+        NumbersParser parser = new NumbersParser();
         return new StringCalculator(adder, parser, validator);
     }
 

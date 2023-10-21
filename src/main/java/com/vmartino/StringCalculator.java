@@ -1,26 +1,25 @@
 package com.vmartino;
 
-import java.util.stream.Stream;
-
-
 public class StringCalculator {
 
     private NumbersParser parser;
     private Adder adder;
-    private NumbersValidator validator;
+    private RequestValidator validator;
 
-    public StringCalculator(Adder adder, NumbersParser parser, NumbersValidator validator) {
+    public StringCalculator(Adder adder, NumbersParser parser, RequestValidator validator) {
         this.parser = parser;
         this.adder = adder;
         this.validator = validator;
     }
 
     public String add(String input) {
-        Stream<Integer> numbers = parser.numbers(input);
+        CalculatorRequest calculatorRequest = parser.getRequest(input);
+
+        validator.validate(calculatorRequest);
 
         if (validator.anyErrors())
             return validator.getValidationMessage();
 
-        return adder.getSum(numbers).toString();
+        return adder.getSum(calculatorRequest.numbers()).toString();
     }
 }

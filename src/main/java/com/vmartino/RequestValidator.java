@@ -1,16 +1,8 @@
 package com.vmartino;
 
-public class NumbersValidator {
+public class RequestValidator {
     private ErrorMessages errorMessages;
     private CalculatorRequest calculatorRequest;
-
-    public NumbersValidator( ErrorMessages errorMessages) {
-        this.errorMessages = errorMessages;
-    }
-
-    public void setCalculatorRequest(CalculatorRequest calculatorRequest) {
-        this.calculatorRequest = calculatorRequest;
-    }
 
     public void checkInvalidDelimiter() {
         calculatorRequest.invalidDelimiter()
@@ -34,5 +26,13 @@ public class NumbersValidator {
 
     private void addErrorsInvalidDelimiterMessage(String itemWithInvalidDelimiter) {
         errorMessages.addErrorsInvalidDelimiterMessage(itemWithInvalidDelimiter);
+    }
+
+    public void validate(CalculatorRequest calculatorRequest) {
+        this.calculatorRequest = calculatorRequest;
+        this.errorMessages = new ErrorMessages(calculatorRequest);
+
+        checkInvalidDelimiter();
+        checkNegativeNumber(); 
     }
 }

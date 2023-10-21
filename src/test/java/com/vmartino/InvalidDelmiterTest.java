@@ -61,8 +61,7 @@ class InvalidDelmiterTest {
     }
 
     private CalculatorRequest calculatorRequest() {
-        CalculatorRequest calculatorRequest = new CalculatorRequest();
-        calculatorRequest.setData(input, delimiter);
+        CalculatorRequest calculatorRequest = new CalculatorRequest(input, delimiter);
         return calculatorRequest;
     }
 }

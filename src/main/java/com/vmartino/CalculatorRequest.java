@@ -13,7 +13,7 @@ public class CalculatorRequest implements ErrorsQuery {
     private String normalizedInput;
     private String delimiter;
 
-    public void setData(String normalizedInput, String delimiter) {
+    public CalculatorRequest(String normalizedInput, String delimiter) {
         this.normalizedInput = normalizedInput;
         this.delimiter = delimiter;
     }
